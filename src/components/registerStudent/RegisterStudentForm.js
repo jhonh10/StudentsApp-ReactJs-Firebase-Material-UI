@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -48,17 +47,6 @@ const resolutions = [
   }
 ];
 export default function RegisterStudentForm({ setOpenModal, notify }) {
-  const [exists, setExists] = useState(false);
-  const validate = () => {
-    const errors = {};
-    if (exists) {
-      errors.cedula = 'El usuario Existe';
-    }
-    return errors;
-  };
-  const handleValidate = async (e) => {
-    setExists(await validateIfStudentExists({ id: e }));
-  };
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, 'Muy Corto!')
@@ -68,7 +56,14 @@ export default function RegisterStudentForm({ setOpenModal, notify }) {
       .min(2, 'Muy Corto!')
       .max(50, 'Muy Largo!')
       .required('Apellido es requerido'),
-    cedula: Yup.number().required('Cedula es requerida'),
+    cedula: Yup.string()
+      .matches(/^[0-9]+$/, 'Deben ser solo numeros')
+      .min(5, 'No parece un documento valido')
+      .required('Cedula es requerida')
+      .test('cedula', 'Ya existe un registro con este documento', async (value) => {
+        const response = await validateIfStudentExists({ id: value });
+        return !response;
+      }),
     curso: Yup.string().required('Seleccione un curso'),
     resolucion: Yup.string().required('Seleccione la resolucion vigente')
   });
@@ -81,7 +76,9 @@ export default function RegisterStudentForm({ setOpenModal, notify }) {
       curso: '',
       resolucion: ''
     },
-    validateOnMount: true,
+    validateOnMount: false,
+    validateOnChange: false,
+    validateOnBlur: false,
     validationSchema: RegisterSchema,
     onSubmit: async () => {
       try {
@@ -91,20 +88,18 @@ export default function RegisterStudentForm({ setOpenModal, notify }) {
       } catch (error) {
         console.log(error);
       }
-    },
-    validate
+    }
   });
 
   const {
     errors,
     touched,
     values,
-    handleSubmit,
     isSubmitting,
     getFieldProps,
     handleChange,
     handleBlur,
-    isValid
+    handleSubmit
   } = formik;
 
   return (
@@ -137,10 +132,8 @@ export default function RegisterStudentForm({ setOpenModal, notify }) {
             {...getFieldProps('cedula')}
             error={Boolean(touched.cedula && errors.cedula)}
             helperText={touched.cedula && errors.cedula}
-            onChange={(e) => {
-              handleValidate(e.currentTarget.value);
-              handleChange(e);
-            }}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
 
           <TextField
@@ -191,7 +184,6 @@ export default function RegisterStudentForm({ setOpenModal, notify }) {
             type="submit"
             variant="contained"
             loading={isSubmitting}
-            disabled={!isValid}
           >
             Crear Alumno
           </LoadingButton>

@@ -10,13 +10,13 @@ const Diploma = () => {
   const navigate = useNavigate();
 
   const getUserData = useCallback(async () => {
-    const user = await validateIfStudentExists({ id: studentId, callback: setUserData });
-    if (!user) navigate('/certificaciones');
+    const userInfo = await validateIfStudentExists({ id: studentId, callback: setUserData });
+    if (!userInfo) navigate('/certificaciones');
   }, [navigate, studentId]);
 
   useEffect(() => {
     getUserData();
-  }, [getUserData]);
+  }, [getUserData, studentId]);
   return (
     <Page title={`Diploma | ${userData.nombre} ${userData.apellido}`}>
       <Container>

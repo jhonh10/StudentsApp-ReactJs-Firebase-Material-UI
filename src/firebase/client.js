@@ -1,17 +1,9 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { onAuthStateChanged, getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-// const firebaseConfig = JSON.parse(process.env.REACT_PUBLIC_FIREBASE_CONFIG)
 
-const app = firebase.initializeApp({
-  apiKey: 'AIzaSyDsj0-VKw9qDsWjv6tTab0dzU9jC8g4i9c',
-  authDomain: 'cemaquialumnos.firebaseapp.com',
-  projectId: 'cemaquialumnos',
-  storageBucket: 'cemaquialumnos.appspot.com',
-  messagingSenderId: '1048956040813',
-  appId: '1:1048956040813:web:70b9adcdc45643c2ac7164',
-  measurementId: 'G-RL9817Y5P0'
-});
+const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG);
+const app = firebase.initializeApp(firebaseConfig);
 const db = app.firestore();
 const auth = getAuth(app);
 

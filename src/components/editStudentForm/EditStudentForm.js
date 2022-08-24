@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -48,17 +47,6 @@ const resolutions = [
   }
 ];
 export default function EditStudentForm({ setOpenModal, notify, user, setDefaultModal }) {
-  const [exists, setExists] = useState(false);
-  const validate = () => {
-    const errors = {};
-    if (exists) {
-      errors.cedula = 'Ya existe un registro con este documento';
-    }
-    return errors;
-  };
-  const handleValidate = async (e) => {
-    setExists(await validateIfStudentExists({ id: e }));
-  };
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, 'Muy Corto!')
@@ -68,7 +56,15 @@ export default function EditStudentForm({ setOpenModal, notify, user, setDefault
       .min(2, 'Muy Corto!')
       .max(50, 'Muy Largo!')
       .required('Apellido es requerido'),
-    cedula: Yup.number().required('Cedula es requerida'),
+    cedula: Yup.string()
+      .matches(/^[0-9]+$/, 'Deben ser solo numeros')
+      .min(5, 'No parece un documento valido')
+      .required('Cedula es requerida')
+      .test('cedula', 'Ya existe un registro con este documento', async (value) => {
+        if (user.uid === value) return true;
+        const response = await validateIfStudentExists({ id: value });
+        return !response;
+      }),
     curso: Yup.string().required('Seleccione un curso'),
     resolucion: Yup.string().required('Seleccione la resolucion vigente')
   });
@@ -84,26 +80,27 @@ export default function EditStudentForm({ setOpenModal, notify, user, setDefault
       añoExpedicion: user.añoExpedicion
     },
     validationSchema: RegisterSchema,
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: async () => {
       try {
         await UpdateStudent(values);
         setOpenModal(false);
         setDefaultModal(true);
-        notify('Alumno actulizado correctamente');
+        notify('Alumno actualizado correctamente');
       } catch (error) {
         console.log(error);
       }
-    },
-    validate
+    }
   });
 
   const {
     errors,
     touched,
     values,
-    handleSubmit,
     isSubmitting,
     getFieldProps,
+    handleSubmit,
     handleChange,
     handleBlur
   } = formik;
@@ -138,10 +135,8 @@ export default function EditStudentForm({ setOpenModal, notify, user, setDefault
             {...getFieldProps('cedula')}
             error={Boolean(touched.cedula && errors.cedula)}
             helperText={touched.cedula && errors.cedula}
-            onChange={(e) => {
-              handleValidate(e.currentTarget.value);
-              handleChange(e);
-            }}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
 
           <TextField

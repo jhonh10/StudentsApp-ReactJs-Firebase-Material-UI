@@ -11,25 +11,19 @@ import { validateIfStudentExists } from '../../../firebase/client';
 export default function CertificationForm() {
   const navigate = useNavigate();
 
-  const onSubmit = async () => {
-    try {
-      const exists = await validateIfStudentExists({
-        id: values.documentID
-      });
-      if (exists) {
-        navigate(`/diploma/${values.documentID}`);
-      } else {
-        errors.documentID = 'Usuario no encontrado';
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const onSubmit = () => {
+    navigate(`/diploma/${values.documentID}`);
   };
 
   const RegisterSchema = Yup.object().shape({
-    documentID: Yup.number()
-      .min(4, 'Documento parece invalido!')
+    documentID: Yup.string()
+      .matches(/^[0-9]+$/, 'Ingrese solo numeros sin puntos ni comas')
+      .min(5, 'No parece un documento valido')
       .required('Numero de cedula es requerido')
+      .test('documentId', 'No se encontraron registros para este documento', async (value) => {
+        const response = await validateIfStudentExists({ id: value });
+        return response;
+      })
   });
 
   const formik = useFormik({
@@ -37,11 +31,21 @@ export default function CertificationForm() {
       documentID: ''
     },
     validationSchema: RegisterSchema,
+    validateOnBlur: false,
+    validateOnChange: false,
     onSubmit
   });
 
-  const { values, errors, touched, handleSubmit, isSubmitting, getFieldProps, handleChange } =
-    formik;
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    getFieldProps,
+    handleChange,
+    handleBlur,
+    handleSubmit
+  } = formik;
 
   return (
     <FormikProvider value={formik}>
@@ -54,7 +58,8 @@ export default function CertificationForm() {
               label="Numero de cedula"
               {...getFieldProps('documentID')}
               value={values.documentID}
-              onChange={handleChange}
+              onKeyUp={handleChange}
+              onBlur={handleBlur}
               error={Boolean(touched.documentID && errors.documentID)}
               helperText={touched.documentID && errors.documentID}
             />
