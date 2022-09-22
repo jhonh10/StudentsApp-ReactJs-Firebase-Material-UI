@@ -4,7 +4,7 @@ import DashboardLayout from './layouts/dashboard';
 //
 import Login from './pages/Login';
 import Certification from './pages/Certification';
-import DashboardApp from './pages/DashboardApp';
+// import DashboardApp from './pages/DashboardApp';
 import User from './pages/User';
 import NotFound from './pages/Page404';
 import PublicRoutes from './routers/PublicRoutes';
@@ -25,9 +25,7 @@ export default function Router() {
       <Route element={<ProtectedRoutes />}>
         <Route path="app" element={<DashboardLayout />}>
           <Route path="users" element={<User />} />
-          <Route path="resume" element={<DashboardApp />} />
-          <Route path="products" element={<Products />} />
-          <Route path="blog" element={<Blog />} />
+          {/* <Route path="resume" element={<DashboardApp />} /> */}
         </Route>
       </Route>
       <Route path="certificaciones" element={<Certification />} />
