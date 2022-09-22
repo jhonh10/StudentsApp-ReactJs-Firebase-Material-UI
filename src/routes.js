@@ -5,8 +5,6 @@ import DashboardLayout from './layouts/dashboard';
 import Login from './pages/Login';
 import Certification from './pages/Certification';
 import DashboardApp from './pages/DashboardApp';
-import Products from './pages/Products';
-import Blog from './pages/Blog';
 import User from './pages/User';
 import NotFound from './pages/Page404';
 import PublicRoutes from './routers/PublicRoutes';
