@@ -55,6 +55,9 @@ export default function Login() {
               Iniciar sesión
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>Ingrese sus credenciales.</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>Credenciales de prueba.</Typography>
+            <Typography sx={{ color: 'text.primary' }}>correo: demo@demo.com.</Typography>
+            <Typography sx={{ color: 'text.primary' }}>password: demo12345.</Typography>
           </Stack>
           <LoginForm />
         </ContentStyle>
