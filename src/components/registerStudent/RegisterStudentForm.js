@@ -110,7 +110,7 @@ export default function RegisterStudentForm({ setOpenModal, notify }) {
             <TextField
               fullWidth
               label="Nombres"
-              {...getFieldProps('firstName')}
+              // {...getFieldProps('firstName')}
               error={Boolean(touched.firstName && errors.firstName)}
               helperText={touched.firstName && errors.firstName}
             />

@@ -25,9 +25,9 @@ export default function Router() {
       </Route>
 
       <Route element={<ProtectedRoutes />}>
-        <Route path="dashboard" element={<DashboardLayout />}>
-          <Route index element={<User />} />
-          <Route path="app" element={<DashboardApp />} />
+        <Route path="app" element={<DashboardLayout />}>
+          <Route path="users" element={<User />} />
+          <Route path="resume" element={<DashboardApp />} />
           <Route path="products" element={<Products />} />
           <Route path="blog" element={<Blog />} />
         </Route>

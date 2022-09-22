@@ -7,14 +7,14 @@ const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
 
 const sidebarConfig = [
   {
-    title: 'dashboard',
-    path: '/dashboard/app',
-    icon: getIcon(pieChart2Fill)
+    title: 'Alumnos',
+    path: '/app/users',
+    icon: getIcon(peopleFill)
   },
   {
-    title: 'Alumnos',
-    path: '/',
-    icon: getIcon(peopleFill)
+    title: 'dashboard',
+    path: '/app/resume',
+    icon: getIcon(pieChart2Fill)
   }
 ];
 
