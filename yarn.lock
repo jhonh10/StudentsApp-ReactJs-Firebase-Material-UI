@@ -6155,13 +6155,13 @@ jsonwebtoken@^8.5.1:
     object.assign "^4.1.2"
 
 jszip@^3.6.0:
-  version "3.7.1"
-  resolved "https://registry.npmjs.org/jszip/-/jszip-3.7.1.tgz"
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/jszip/-/jszip-3.10.1.tgz#34aee70eb18ea1faec2f589208a157d1feb091c2"
   dependencies:
     lie "~3.3.0"
     pako "~1.0.2"
     readable-stream "~2.3.6"
-    set-immediate-shim "~1.0.1"
+    setimmediate "^1.0.5"
 
 jwa@^1.4.1:
   version "1.4.1"
@@ -8167,9 +8167,9 @@ serve-static@1.14.2:
     parseurl "~1.3.3"
     send "0.17.2"
 
-set-immediate-shim@~1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/set-immediate-shim/-/set-immediate-shim-1.0.1.tgz"
+setimmediate@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/setimmediate/-/setimmediate-1.0.5.tgz#290cbb232e306942d7d7ea9b83732ab7856f8285"
 
 setprototypeof@1.1.0:
   version "1.1.0"
